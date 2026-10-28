@@ -191,13 +191,15 @@ def token_entropy(generator, prompt: str, n_samples: int = 8) -> float:
     import torch
 
     tokenizer, model = generator.ensure_model()
-    enc = tokenizer(prompt, return_tensors="pt", truncation=True, max_length=1024)
+    n_new = 160  # max_new_tokens; keep prompt + generation <= 1024 positions
+    enc = tokenizer(prompt, return_tensors="pt", truncation=True,
+                    max_length=1024 - n_new)
     entropies = []
     with torch.no_grad():
         for _ in range(n_samples):
             tokens = model.generate(
                 **enc,
-                max_new_tokens=160,
+                max_new_tokens=n_new,
                 do_sample=True,
                 pad_token_id=tokenizer.eos_token_id,
                 return_dict_in_generate=True,
