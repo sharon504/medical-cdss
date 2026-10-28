@@ -41,7 +41,13 @@ class ReportGenerator:
         extractor=None,
     ):
         self.cfg = cfg or GenerationConfig.from_settings()
-        self.model_path = Path(model_path) if model_path else None
+        # Keep HuggingFace repo ids (e.g. "org/model") intact on Windows;
+        # only convert to a Path when the path actually exists locally.
+        if model_path is None:
+            self.model_path = None
+        else:
+            candidate = Path(model_path)
+            self.model_path = candidate if candidate.exists() else str(model_path)
         self.mode = mode
         self.extractor = extractor or default_extract
         self._model = None

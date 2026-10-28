@@ -118,7 +118,7 @@ def build_references(evidence: list[Evidence]) -> str:
     for i, ev in enumerate(evidence, start=1):
         provenance = ev.title
         if ev.chunk_id.startswith("pmid:"):
-            provenance += f" (PMID {ev.pmid or ''})".replace(" ()", "")
+            provenance += f" (PMID {ev.pmid})" if ev.pmid else " (PubMed)"
         elif ev.source_type == "seed_reference":
             provenance += " (curated seed reference)"
         lines.append(f"[E{i}] {provenance}")
@@ -130,14 +130,18 @@ def finalize_report(raw_text: str, evidence: list[Evidence]) -> tuple[str, float
     Returns (final_report, unsupported_ratio)."""
     grounded = strip_unsupported(raw_text, evidence)
     ratio = unsupported_ratio(raw_text, evidence)
-    footer = build_references(evidence)
-    if "EVIDENCE REFERENCES" in grounded.upper():
-        grounded = re.sub(
-            r"EVIDENCE REFERENCES[:\s]*$[\s\S]*",
-            footer,
-            grounded,
-            flags=re.IGNORECASE,
-        )
+    references = build_references(evidence)
+    marker = re.search(r"EVIDENCE REFERENCES[:\s]*", grounded, flags=re.IGNORECASE)
+    if marker:
+        head = grounded[:marker.start()].rstrip()
+        # Preserve transparency notes the model emitted inside the reference
+        # block, but replace any model-written citations with the real footer.
+        tail = grounded[marker.end():]
+        suppressed = [ln for ln in tail.splitlines() if "(suppressed:" in ln]
+        grounded = f"{head}\n\nEVIDENCE REFERENCES:"
+        if suppressed:
+            grounded += "\n" + "\n".join(suppressed)
+        grounded += f"\n{references}"
     else:
-        grounded = f"{grounded}\n\nEVIDENCE REFERENCES:\n{footer}"
+        grounded = f"{grounded.rstrip()}\n\nEVIDENCE REFERENCES:\n{references}"
     return grounded, ratio

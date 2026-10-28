@@ -14,10 +14,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 
 def main() -> None:
+    # Windows consoles default to cp1252; generated text may contain Unicode.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--patient", required=True, help="patient JSON file")
     ap.add_argument("--model", default=None, help="fine-tuned checkpoint dir")
@@ -70,12 +76,12 @@ def main() -> None:
         print(f"\nunsupported-claim ratio: {ratio:.2%}\n")
         print(report)
         if args.out:
-            Path(args.out).write_text(report)
+            Path(args.out).write_text(report, encoding="utf-8")
             print(f"saved -> {args.out}")
         return
 
     if args.out:
-        Path(args.out).write_text(prompt)
+        Path(args.out).write_text(prompt, encoding="utf-8")
         print(f"saved prompt -> {args.out}")
 
 

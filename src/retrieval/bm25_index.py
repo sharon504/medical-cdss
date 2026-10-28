@@ -96,6 +96,7 @@ def search(
                 source_type=c["source_type"],
                 text=c["text"],
                 score=float(scores[i]),
+                pmid=str(c.get("pmid", "")),
                 meta={k: c.get(k, "") for k in ("condition", "pmid")},
             )
         )

@@ -16,5 +16,8 @@ torch>=2.1
 # evaluation
 scikit-learn>=1.4
 
+# testing
+pytest>=8.0
+
 # demo
 streamlit>=1.36

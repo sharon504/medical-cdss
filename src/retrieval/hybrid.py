@@ -23,7 +23,7 @@ def reciprocal_rank_fusion(
 
     Returns a single list sorted by fused score (deduplicated by chunk_id).
     """
-    fused: dict[str, tuple[float, Evidence]] = {}
+    fused: dict[str, list] = {}
     for lst in ranked_lists:
         for rank, ev in enumerate(lst, start=1):
             hit = fused.get(ev.chunk_id)
@@ -34,8 +34,8 @@ def reciprocal_rank_fusion(
                 hit[1].score = max(hit[1].score, ev.score)
             else:
                 ev.score = new_score  # replace raw score with fused score
-                fused[ev.chunk_id] = (new_score, ev)
-    fused_list = [ (score, ev) for score, ev in fused.values() ]
+                fused[ev.chunk_id] = [new_score, ev]
+    fused_list = [ (entry[0], entry[1]) for entry in fused.values() ]
     fused_list.sort(key=lambda x: x[0], reverse=True)
     return [ev for _, ev in fused_list]
 

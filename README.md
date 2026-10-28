@@ -89,6 +89,274 @@ python -m src.retrieval.build_indices
 python -m src.generation.cli --patient configs/sample_patient.json
 ```
 
+## Step-by-step setup and testing (Windows)
+
+Run these commands from the repository root
+(`medical-cdss`) in **cmd**. A PowerShell equivalent is noted where the
+syntax differs.
+
+### 1. Create and activate the environment
+
+```bat
+python -m venv .venv
+.venv\Scripts\activate
+python --version
+```
+
+PowerShell:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python --version
+```
+
+If PowerShell blocks the activation script, run
+`Set-ExecutionPolicy -Scope Process Bypass` first, or call
+`.\.venv\Scripts\python.exe` directly instead of activating.
+
+### 2. Install dependencies
+
+```bat
+pip install -r requirements.txt
+pip list
+```
+
+Expected packages include `requests`, `rank-bm25`, `sentence-transformers`,
+`faiss-cpu`, `transformers`, `torch`, `pytest`, and `streamlit`.
+
+### 3. Build the knowledge base
+
+```bat
+python -m src.corpus.fetch_pubmed --limit 60
+python -m src.corpus.build_kb
+```
+
+Expected: ten files under `data/raw/pubmed/`, roughly 59–60 abstracts per
+condition, followed by:
+
+```text
+wrote 657 chunks -> knowledge_base\chunks.jsonl
+```
+
+Check the output files:
+
+```bat
+dir data\raw\pubmed
+find /c /v "" knowledge_base\chunks.jsonl
+```
+
+### 4. Build retrieval indices
+
+```bat
+python -m src.retrieval.build_indices
+```
+
+Expected (counts vary slightly as PubMed grows):
+
+```text
+built BM25 over 657 chunks -> knowledge_base\bm25.pkl
+built dense index (657 x 768) -> knowledge_base\dense.faiss
+```
+
+Verify `knowledge_base\bm25.pkl`, `knowledge_base\dense.faiss`, and
+`knowledge_base\metadata.jsonl` exist.
+
+### 5. Run the report CLI without a trained checkpoint
+
+```bat
+python -m src.generation.cli --patient configs/sample_patient.json
+```
+
+Expected: five retrieved passages, extracted triplets,
+`unsupported-claim ratio: n/a`, and the full generation prompt. Without
+`models/gpt2-clinical-rag`, the CLI intentionally stops before generation.
+
+### 6. Exercise the full generation stage
+
+Smoke-test with a tiny public model (downloads on first use):
+
+```bat
+python -m src.generation.cli --patient configs/sample_patient.json --model sshleifer/tiny-gpt2 --out report.md
+```
+
+Expected: an unsupported-claim ratio, `saved -> report.md`, and a report
+ending with a real reference list:
+
+```text
+EVIDENCE REFERENCES:
+[E1] Iron Deficiency Anemia (curated seed reference)
+...
+```
+
+Use the trained checkpoint instead when available:
+
+```bat
+python -m src.generation.cli --patient configs/sample_patient.json --model models\gpt2-clinical-rag --out report.md
+```
+
+### 7. Test the RRF ablation path
+
+```bat
+python -m src.generation.cli --patient configs/sample_patient.json --retrieval rrf
+```
+
+Expected: `retrieved 6 evidence passages (rrf)`.
+
+### 8. Run the automated tests
+
+```bat
+python -m pytest tests -q
+```
+
+Expected:
+
+```text
+22 passed
+```
+
+### 9. Verify command exit codes
+
+After each command above, check that it succeeded:
+
+```bat
+echo %ERRORLEVEL%
+```
+
+Expected: `0`.
+
+PowerShell:
+
+```powershell
+$LASTEXITCODE
+```
+
+## Step-by-step setup and testing (Linux/macOS)
+
+Run these commands from the repository root (`medical-cdss`). They apply to
+Linux and macOS; use `python3` if `python` is not on your PATH.
+
+### 1. Create and activate the environment
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python --version
+```
+
+### 2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+pip list
+```
+
+Expected packages include `requests`, `rank-bm25`, `sentence-transformers`,
+`faiss-cpu`, `transformers`, `torch`, `pytest`, and `streamlit`.
+
+### 3. Build the knowledge base
+
+```bash
+python -m src.corpus.fetch_pubmed --limit 60
+python -m src.corpus.build_kb
+```
+
+Expected: ten files under `data/raw/pubmed/`, roughly 59–60 abstracts per
+condition, followed by:
+
+```text
+wrote 657 chunks -> knowledge_base/chunks.jsonl
+```
+
+Check the output files:
+
+```bash
+ls data/raw/pubmed
+wc -l knowledge_base/chunks.jsonl
+```
+
+### 4. Build retrieval indices
+
+```bash
+python -m src.retrieval.build_indices
+```
+
+Expected (counts vary slightly as PubMed grows):
+
+```text
+built BM25 over 657 chunks -> knowledge_base/bm25.pkl
+built dense index (657 x 768) -> knowledge_base/dense.faiss
+```
+
+Verify the index files exist:
+
+```bash
+ls -l knowledge_base/bm25.pkl knowledge_base/dense.faiss knowledge_base/metadata.jsonl
+```
+
+### 5. Run the report CLI without a trained checkpoint
+
+```bash
+python -m src.generation.cli --patient configs/sample_patient.json
+```
+
+Expected: five retrieved passages, extracted triplets,
+`unsupported-claim ratio: n/a`, and the full generation prompt. Without
+`models/gpt2-clinical-rag`, the CLI intentionally stops before generation.
+
+### 6. Exercise the full generation stage
+
+Smoke-test with a tiny public model (downloads on first use):
+
+```bash
+python -m src.generation.cli --patient configs/sample_patient.json --model sshleifer/tiny-gpt2 --out report.md
+```
+
+Expected: an unsupported-claim ratio, `saved -> report.md`, and a report
+ending with a real reference list:
+
+```text
+EVIDENCE REFERENCES:
+[E1] Iron Deficiency Anemia (curated seed reference)
+...
+```
+
+Use the trained checkpoint instead when available:
+
+```bash
+python -m src.generation.cli --patient configs/sample_patient.json --model models/gpt2-clinical-rag --out report.md
+```
+
+### 7. Test the RRF ablation path
+
+```bash
+python -m src.generation.cli --patient configs/sample_patient.json --retrieval rrf
+```
+
+Expected: `retrieved 6 evidence passages (rrf)`.
+
+### 8. Run the automated tests
+
+```bash
+python -m pytest tests -q
+```
+
+Expected:
+
+```text
+22 passed
+```
+
+### 9. Verify command exit codes
+
+After each command above, check that it succeeded:
+
+```bash
+echo $?
+```
+
+Expected: `0`.
+
 Training uses Google Colab (free tier): open notebooks `01`→`04` in order,
 store checkpoints in Google Drive, then copy the final model into `models/`.
 

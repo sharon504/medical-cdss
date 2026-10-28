@@ -46,7 +46,9 @@ def main() -> None:
             print(f"skip {out_file} (exists)")
             continue
 
-        pmids = client.search(condition, limit=limit)
+        # PubMed relevance ranking often surfaces editorials/letters with no
+        # abstract; require an abstract so the KB is actually populated.
+        pmids = client.search(f"{condition} AND hasabstract[text]", limit=limit)
         records = [a.as_dict() for a in client.fetch_abstracts(pmids)]
         # keep only records with an actual abstract body
         records = [r for r in records if len(r["abstract"]) > 200]
