@@ -141,7 +141,12 @@ def conflict_triplet(flag: ConflictFlag) -> Triplet:
 
 def system_conflicts_report(triplets: list[Triplet]) -> tuple[str | None, float]:
     """Render the CONFLICTS / UNCERTAINTY section (or None when no conflict)
-    and return the aggregate confidence."""
+    and return the aggregate confidence.
+
+    Escalation: SYSTEM NOTE is emitted when confidence is low (< 0.6) OR
+    when conflict pressure is high (>= 2 independent flagged pairs) -
+    moderate conflicts rarely sum below the aggregate threshold alone.
+    """
     flags = detect_conflicts(triplets)
     confidence = aggregate_confidence(triplets)
     if not flags:
@@ -150,7 +155,7 @@ def system_conflicts_report(triplets: list[Triplet]) -> tuple[str | None, float]
              f"{conflict_triplet(f).relation} | "
              f"{conflict_triplet(f).conclusion}"
              for f in flags]
-    if confidence < 0.6:
+    if confidence < 0.6 or len(flags) >= 2:
         lines.append(
             "SYSTEM NOTE: conflict pressure high - output withheld as "
             "decision support; escalate to clinician for adjudication."
