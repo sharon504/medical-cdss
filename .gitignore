@@ -6,11 +6,20 @@ venv/
 *.egg-info/
 .pytest_cache/
 
-# data & artifacts (rebuildable)
+# data & artifacts (rebuildable) — whitelisted exceptions are training/eval
+# datasets that Colab notebook clones need at runtime; see git log "data:"
 data/raw/
-data/processed/
+data/processed/*
+!data/processed/sft_pairs.jsonl
+!data/processed/triplet_pairs.jsonl
+!data/processed/noise_variants.jsonl
+!data/processed/eval/
+!data/processed/eval/retrieval_dev.jsonl
+!data/processed/eval/patients/*
+data/processed/eval/ablation_results.jsonl
 knowledge_base/*.faiss
 knowledge_base/*.pkl
+!knowledge_base/bm25.pkl
 models/
 checkpoints/
 *.safetensors
