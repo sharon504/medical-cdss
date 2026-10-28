@@ -91,13 +91,14 @@ def build_triplet_prompt(
     evidence: list[Evidence],
     cfg: GenerationConfig,
     extractor=None,
+    inject_conflicts: bool = False,
 ) -> tuple[str, list, list[Evidence]]:
     """Respondent prompt conditioned on distilled reasoning triplets
     (paper-faithful) instead of raw evidence snippets.
 
-    Triplets keep their [E#] provenance; the raw passages are still shared
-    with the clinician through the report's EVIDENCE REFERENCES footer made
-    by src/generation/postprocess.py.
+    inject_conflicts=True merges flagged contradiction triplets into the
+    triplet block (GT-MedRAG conflict module) with aggregator rendering;
+    ablation 'rag_triplets_no_conflict' sets it False.
     """
     from .triplets import concatenated_block, rule_based_extract
 
@@ -105,6 +106,18 @@ def build_triplet_prompt(
     triplets: list = []
     for i, ev in enumerate(evidence, start=1):
         triplets.extend(extractor(ev, f"E{i}"))
+
+    conflicts_section = None
+    if inject_conflicts and triplets:
+        from .conflict import detect_conflicts, conflict_triplet, aggregate_confidence
+
+        flags = detect_conflicts(triplets)
+        triplets = triplets + [conflict_triplet(f) for f in flags]
+        if flags and aggregate_confidence(triplets, base=1.0) < 0.6:
+            conflicts_section = (
+                "SYSTEM NOTE: conflict pressure high - automatic output "
+                "withheld; escalate to clinician for adjudication."
+            )
 
     evidence_block = (
         concatenated_block(triplets)
@@ -132,6 +145,8 @@ def build_triplet_prompt(
         f"CONFLICTS / UNCERTAINTY:\n"
         f"EVIDENCE REFERENCES:\n"
     )
+    if conflicts_section:
+        prompt = f"{prompt}\n{conflicts_section}\n"
     return prompt, triplets, evidence
 
 
