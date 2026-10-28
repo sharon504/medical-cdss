@@ -102,6 +102,35 @@ def search(
     return out
 
 
+def search_corpora(query: str, chunks: list[dict], top_k: int = 20,
+                   k1: float | None = None, b: float | None = None) -> list[Evidence]:
+    """Rank an in-memory chunk list directly (no pickled index needed) -
+    used by data synthesis and tests."""
+    from rank_bm25 import BM25Okapi
+
+    corpus_tokens = [tokenize(c["text"]) for c in chunks]
+    bm25 = BM25Okapi(corpus_tokens, k1=k1 or _bm25_k1(), b=b or _bm25_b())
+    scores = bm25.get_scores(tokenize(query))
+    ranked = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)
+    out: list[Evidence] = []
+    for i in ranked[:top_k]:
+        if scores[i] <= 0:
+            break
+        c = chunks[i]
+        out.append(
+            Evidence(
+                chunk_id=c["chunk_id"],
+                title=c["title"],
+                source_type=c["source_type"],
+                text=c["text"],
+                score=float(scores[i]),
+                pmid=str(c.get("pmid", "")),
+                meta={k: c.get(k, "") for k in ("condition",)},
+            )
+        )
+    return out
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__)
     sub = ap.add_subparsers(dest="cmd", required=True)
