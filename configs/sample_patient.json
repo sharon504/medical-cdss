@@ -1,0 +1,20 @@
+{
+  "patient_id": "DEMO-001",
+  "age": 52,
+  "sex": "female",
+  "chief_complaint": "Progressive fatigue and breathlessness on exertion for 3 months",
+  "history": "Menorrhagia for 2 years. Vegetarian diet. No chest pain, no tuberculosis contact. Takexisting hypertension controlled with amlodipine.",
+  "vitals": {
+    "pulse": "98/min regular",
+    "bp": "120/80 mmHg",
+    "spo2": "97% room air",
+    "temperature": "36.9 C"
+  },
+  "lab_values": {
+    "hemoglobin": "7.8 g/dL (low)",
+    "mcv": "68 fL (low)",
+    "serum_ferritin": "6 ng/mL (low)",
+    "wbc": "7200/mm3 (normal)",
+    "platelets": "310000/mm3 (normal)"
+  }
+}

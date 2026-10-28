@@ -1,0 +1,26 @@
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# data & artifacts (rebuildable)
+data/raw/
+data/processed/
+knowledge_base/*.faiss
+knowledge_base/*.pkl
+models/
+checkpoints/
+*.safetensors
+*.bin
+*.ckpt
+
+# generated large files
+*.jsonl.gz
+
+# tooling
+.DS_Store
+.ipynb_checkpoints/
+.env

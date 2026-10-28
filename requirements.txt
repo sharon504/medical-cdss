@@ -1,0 +1,20 @@
+# core
+requests>=2.31
+pyyaml>=6.0
+tqdm>=4.66
+
+# retrieval
+rank-bm25>=0.2.2
+sentence-transformers>=2.6
+faiss-cpu>=1.8
+numpy>=1.26
+
+# generation (Colab CPU-inference friendly)
+transformers>=4.44
+torch>=2.1
+
+# evaluation
+scikit-learn>=1.4
+
+# demo
+streamlit>=1.36

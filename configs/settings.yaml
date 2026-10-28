@@ -1,0 +1,53 @@
+# Project-wide settings for Medical CDSS.
+
+paths:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  kb_dir: knowledge_base
+  chunks_file: knowledge_base/chunks.jsonl
+  faiss_index: knowledge_base/dense.faiss
+  bm25_index: knowledge_base/bm25.pkl
+  metadata_file: knowledge_base/metadata.jsonl
+  models_dir: models
+  eval_dir: data/processed/eval
+
+corpus:
+  # Target conditions for the pilot knowledge base. Each entry seeds PubMed
+  # queries; abstracts are fetched via NCBI E-utilities (public, no key needed
+  # below 3 req/s).
+  conditions:
+    - "anemia iron deficiency"
+    - "community acquired pneumonia"
+    - "acute myocardial infarction"
+    - "ischemic stroke"
+    - "hypothyroidism"
+    - "type 2 diabetes mellitus"
+    - "pulmonary tuberculosis"
+    - "chronic kidney disease"
+    - "appendicitis acute abdomen"
+    - "hyperthyroidism graves"
+  max_abstracts_per_query: 60
+  fetch_sleep_seconds: 0.4
+
+chunking:
+  chunk_size: 420          # target chars-ish tokens guard: we split on words
+  max_words: 300           # ~420-450 tokens
+  overlap_words: 50
+
+retrieval:
+  dense_model: pritamdeka/S-PubMedBert-MS-MARCO
+  bm25_k1: 1.5
+  bm25_b: 0.75
+  top_k_dense: 20
+  top_k_bm25: 20
+  final_top_k: 6
+  rrf_k: 60                # reciprocal rank fusion constant
+
+generation:
+  base_model: gpt2
+  pretrained_model: gpt2-medium
+  adapter_dir: models/gpt2-clinical-rag
+  max_new_tokens: 320
+  temperature: 0.7
+  top_p: 0.9
+  repetition_penalty: 1.2
