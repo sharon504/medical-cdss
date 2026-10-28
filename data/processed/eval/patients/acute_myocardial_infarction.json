@@ -1,0 +1,16 @@
+{
+  "patient_id": "EVAL-ACUTE_MYOCAR",
+  "age": 63,
+  "sex": "female",
+  "chief_complaint": "Central chest pressure with sweating for 1 hour",
+  "history": "Type 2 diabetes, hypertension. Epigastric discomfort, no arm radiation.",
+  "vitals": {
+    "pulse": "100/min",
+    "bp": "140/90 mmHg",
+    "spo2": "94% room air"
+  },
+  "lab_values": {
+    "troponin_i": "8.2 ng/mL (high)",
+    "ecg": "ST elevation V2-V4"
+  }
+}

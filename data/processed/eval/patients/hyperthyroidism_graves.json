@@ -1,0 +1,16 @@
+{
+  "patient_id": "EVAL-HYPERTHYROID",
+  "age": 37,
+  "sex": "female",
+  "chief_complaint": "Palpitations, weight loss and heat intolerance for 2 months",
+  "history": "Tremor, loose stools. Diffuse goiter with proptosis.",
+  "vitals": {
+    "pulse": "118/min",
+    "bp": "145/60 mmHg"
+  },
+  "lab_values": {
+    "tsh": "<0.01 mIU/L (low)",
+    "free_t4": "3.4 ng/dL (high)",
+    "trab": "positive"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "patient_id": "EVAL-TYPE_2_DIABE",
+  "age": 57,
+  "sex": "male",
+  "chief_complaint": "Thirst, excessive urination and blurred vision for 2 months",
+  "history": "Obesity, Father with diabetes, sedentary job.",
+  "vitals": {
+    "pulse": "82/min",
+    "bp": "138/86 mmHg",
+    "weight": "92 kg"
+  },
+  "lab_values": {
+    "hba1c": "8.9%",
+    "fasting_glucose": "168 mg/dL (high)"
+  }
+}

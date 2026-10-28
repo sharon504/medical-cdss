@@ -1,0 +1,17 @@
+{
+  "patient_id": "EVAL-COMMUNITY_AC",
+  "age": 69,
+  "sex": "male",
+  "chief_complaint": "Fever and productive cough for 4 days",
+  "history": "Smoker. Right-sided pleuritic pain, mild confusion yesterday.",
+  "vitals": {
+    "temperature": "38.7 C",
+    "pulse": "110/min",
+    "respiratory_rate": "32/min"
+  },
+  "lab_values": {
+    "wbc": "15500/mm3 (high)",
+    "crp": "180 mg/L (high)",
+    "urea": "8.6 mmol/L (high)"
+  }
+}

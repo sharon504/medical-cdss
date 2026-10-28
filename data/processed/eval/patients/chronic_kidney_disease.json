@@ -1,0 +1,16 @@
+{
+  "patient_id": "EVAL-CHRONIC_KIDN",
+  "age": 65,
+  "sex": "female",
+  "chief_complaint": "Progressive tiredness, nocturia and ankle swelling",
+  "history": "Diabetes 12 years, hypertension. NSAID use for back pain.",
+  "vitals": {
+    "bp": "150/92 mmHg",
+    "pulse": "84/min"
+  },
+  "lab_values": {
+    "eGFR": "28 mL/min (low)",
+    "creatinine": "2.6 mg/dL (high)",
+    "urine_acr": "420 mg/g"
+  }
+}

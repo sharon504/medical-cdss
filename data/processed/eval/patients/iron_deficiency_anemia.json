@@ -1,0 +1,16 @@
+{
+  "patient_id": "EVAL-IRON_DEFICIE",
+  "age": 42,
+  "sex": "female",
+  "chief_complaint": "Fatigue and exertional breathlessness for 3 months",
+  "history": "Heavy menstrual bleeding for 2 years, vegetarian diet. No GI symptoms.",
+  "vitals": {
+    "pulse": "96/min regular",
+    "bp": "110/70 mmHg"
+  },
+  "lab_values": {
+    "hemoglobin": "8.2 g/dL (low)",
+    "mcv": "67 fL (low)",
+    "serum_ferritin": "5 ng/mL (low)"
+  }
+}

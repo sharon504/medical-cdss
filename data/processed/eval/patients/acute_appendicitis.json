@@ -1,0 +1,16 @@
+{
+  "patient_id": "EVAL-ACUTE_APPEND",
+  "age": 30,
+  "sex": "male",
+  "chief_complaint": "Pain that started near the navel and settled in the right lower abdomen over 24 hours",
+  "history": "Anorexia, one episode of vomiting, pain worse on movement.",
+  "vitals": {
+    "temperature": "37.9 C",
+    "pulse": "96/min"
+  },
+  "lab_values": {
+    "wbc": "13400/mm3 (high)",
+    "crp": "46 mg/L (high)",
+    "urinalysis": "unremarkable"
+  }
+}

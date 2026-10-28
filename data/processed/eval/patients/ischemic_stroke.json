@@ -1,0 +1,16 @@
+{
+  "patient_id": "EVAL-ISCHEMIC_STR",
+  "age": 76,
+  "sex": "male",
+  "chief_complaint": "Sudden left arm weakness and slurred speech 90 minutes ago",
+  "history": "Atrial fibrillation on irregular medication, smoker.",
+  "vitals": {
+    "pulse": "irregular 104/min",
+    "bp": "165/95 mmHg",
+    "glucose": "7.1 mmol/L"
+  },
+  "lab_values": {
+    "ecg": "atrial fibrillation",
+    "ct_head": "early ischemic change, no hemorrhage"
+  }
+}

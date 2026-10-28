@@ -1,0 +1,15 @@
+{
+  "patient_id": "EVAL-PULMONARY_TU",
+  "age": 45,
+  "sex": "male",
+  "chief_complaint": "Productive cough and night sweats for 6 weeks",
+  "history": "Weight loss 6 kg. Contact with tuberculosis patient. Low-grade evening fever.",
+  "vitals": {
+    "temperature": "37.8 C",
+    "pulse": "94/min"
+  },
+  "lab_values": {
+    "chest_xray": "right upper lobe cavity",
+    "xpert_mtb_rif": "detected, rifampicin sensitive"
+  }
+}

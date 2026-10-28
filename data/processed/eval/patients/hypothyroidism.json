@@ -1,0 +1,16 @@
+{
+  "patient_id": "EVAL-HYPOTHYROIDI",
+  "age": 49,
+  "sex": "female",
+  "chief_complaint": "Fatigue, weight gain and cold intolerance for 6 months",
+  "history": "Constipation, dry skin, heavier periods. Diffuse goiter on examination.",
+  "vitals": {
+    "pulse": "56/min",
+    "bp": "115/75 mmHg"
+  },
+  "lab_values": {
+    "tsh": "28 mIU/L (high)",
+    "free_t4": "0.6 ng/dL (low)",
+    "anti_tpo": "positive"
+  }
+}
