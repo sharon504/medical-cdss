@@ -1,0 +1,10 @@
+{"chunk_id": "seed:acute_appendicitis::c0", "title": "Acute Appendicitis", "source_type": "seed_reference", "seed_file": "acute_appendicitis.txt"}
+{"chunk_id": "seed:acute_myocardial_infarction::c0", "title": "Acute Myocardial Infarction", "source_type": "seed_reference", "seed_file": "acute_myocardial_infarction.txt"}
+{"chunk_id": "seed:chronic_kidney_disease::c0", "title": "Chronic Kidney Disease", "source_type": "seed_reference", "seed_file": "chronic_kidney_disease.txt"}
+{"chunk_id": "seed:community_acquired_pneumonia::c0", "title": "Community Acquired Pneumonia", "source_type": "seed_reference", "seed_file": "community_acquired_pneumonia.txt"}
+{"chunk_id": "seed:hyperthyroidism_graves::c0", "title": "Hyperthyroidism Graves", "source_type": "seed_reference", "seed_file": "hyperthyroidism_graves.txt"}
+{"chunk_id": "seed:hypothyroidism::c0", "title": "Hypothyroidism", "source_type": "seed_reference", "seed_file": "hypothyroidism.txt"}
+{"chunk_id": "seed:iron_deficiency_anemia::c0", "title": "Iron Deficiency Anemia", "source_type": "seed_reference", "seed_file": "iron_deficiency_anemia.txt"}
+{"chunk_id": "seed:ischemic_stroke::c0", "title": "Ischemic Stroke", "source_type": "seed_reference", "seed_file": "ischemic_stroke.txt"}
+{"chunk_id": "seed:pulmonary_tuberculosis::c0", "title": "Pulmonary Tuberculosis", "source_type": "seed_reference", "seed_file": "pulmonary_tuberculosis.txt"}
+{"chunk_id": "seed:type_2_diabetes_mellitus::c0", "title": "Type 2 Diabetes Mellitus", "source_type": "seed_reference", "seed_file": "type_2_diabetes_mellitus.txt"}
