@@ -1,0 +1,9 @@
+Hypothyroidism: clinical reference summary
+
+Findings. Hypothyroidism produces insidious fatigue, cold intolerance, weight gain, constipation, dry skin, hair loss, bradycardia, and delayed relaxation of ankle reflexes. In women, menstrual irregularity and subfertility are common. The most frequent cause worldwide is iodine deficiency and in iodine-sufficient regions, autoimmune (Hashimoto) thyroiditis confirmed by positive anti-TPO antibodies and a diffuse firm goiter.
+
+Differential diagnosis (ranked): (1) primary hypothyroidism, high TSH with low free T4; (2) subclinical hypothyroidism, high TSH with normal T4; (3) secondary (central) hypothyroidism, low or normal TSH with low free T4, suspect pituitary disease; (4) non-thyroidal illness syndrome in severe systemic illness; (5) depression, anemia mimickers producing overlapping fatigue.
+
+Recommended investigations. TSH and free T4 are first-line; anti-TPO antibodies to establish autoimmune etiology; lipid profile (commonly elevated), CBC for anemia, CK for myopathy; morning cortisol if central hypothyroidism suspected; gluten serology for associated celiac disease when indicated.
+
+Traceability note: levothyroxine dosing and follow-up intervals must cite retrieved guideline passages; models must not generate treatment prescriptions without evidence references.

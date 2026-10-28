@@ -1,0 +1,9 @@
+Ischemic stroke: clinical reference summary
+
+Findings. Ischemic stroke presents with sudden focal neurological deficit: unilateral weakness or numbness, facial droop, dysarthria or aphasia, visual field loss, or ataxia. Onset-to-assessment time is critical because thrombolysis is typically within 4.5 hours and thrombectomy windows extend to 24 hours in selected large-vessel occlusions. The FAST/BE-FAST screens guide prehospital recognition. Chronic risk factors include atrial fibrillation, hypertension, diabetes, smoking, and prior stroke.
+
+Differential diagnosis (ranked): (1) ischemic stroke; (2) transient ischemic attack, with complete resolution; (3) intracerebral hemorrhage, headache and depressed consciousness favor it; (4) hypoglycemia, always excluded at bedside; (5) seizure with Todd palsy; (6) complex migraine with aura.
+
+Recommended investigations. Emergent non-contrast CT head to exclude hemorrhage; glucose at point of care; ECG for atrial fibrillation; CT angiography for large-vessel occlusion if thrombectomy considered; laboratory workup (CBC, coagulation, electrolytes); after stabilization, echocardiography, carotid imaging, and prolonged rhythm monitoring.
+
+Traceability note: eligibility criteria for reperfusion therapies are time sensitive and should always be verified against retrieved current-guideline evidence.

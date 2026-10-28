@@ -1,0 +1,9 @@
+Acute appendicitis: clinical reference summary
+
+Findings. Acute appendicitis classically begins with periumbilical pain migrating to the right iliac fossa over 24 hours, worsened by movement, with anorexia, nausea, and low-grade fever. Localized tenderness at McBurney point with rebound and guarding is typical; Rovsing, psoas, and obturator signs add sensitivity. Young adults are most affected, although appendicitis occurs at any age.
+
+Differential diagnosis (ranked): (1) acute appendicitis; (2) mesenteric adenitis, often after viral illness in children; (3) Meckel diverticulitis; (4) Crohn terminal ileitis; (5) ectopic pregnancy in reproductive-age women, always test hCG; (6) ovarian torsion or ruptured cyst; (7) ureteric colic; (8) urinary tract infection.
+
+Recommended investigations. CBC for leukocytosis, CRP; urinalysis to exclude UTI/stone; beta-hCG in all women of childbearing age; ultrasound of the abdomen first, CT abdomen with contrast when ultrasound is inconclusive; Alvarado or AIR scores support risk stratification in documentation.
+
+Safety note: surgical decision-making is strictly human; the system only organizes findings, differentials, and investigations with citations.

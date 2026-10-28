@@ -1,0 +1,10 @@
+Pulmonary tuberculosis: clinical reference summary
+
+Findings. Pulmonary tuberculosis (PTB) presents classically with more than two weeks of productive cough, night sweats, low-grade evening fever, weight loss, anorexia, and hemoptysis in advanced disease. Host risk factors include immunosuppression, diabetes, malnutrition, and close TB contact. In India,           
+where the project context is set, universal drug susceptibility testing at diagnosis is recommended practice.
+
+Differential diagnosis (ranked): (1) pulmonary tuberculosis; (2) community-acquired bacterial pneumonia; (3) lung malignancy, especially in older smokers; (4) fungal infections (histoplasmosis, aspergillosis); (5) sarcoidosis; (6) bronchiectasis.
+
+Recommended investigations. Sputum smear for acid-fast bacilli plus Xpert MTB/RIF (NAAT) is the recommended first diagnostic test; chest radiograph with cavitation, upper-lobe infiltrates, and hilar lymphadenopathy; tuberculin skin test or IGRA for latent infection assessment; HIV test for all; CBC, LFTs before therapy. Bronchoscopy for sputum-negative cases with high suspicion.
+
+Public health note: PTB is a notifiable disease in India; diagnosis triggers contact tracing and standardized treatment under national program supervision. The CDSS must cite notified-guideline retrieval passages for any therapeutic statement.

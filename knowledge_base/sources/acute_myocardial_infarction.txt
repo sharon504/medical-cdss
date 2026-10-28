@@ -1,0 +1,9 @@
+Acute myocardial infarction: clinical reference summary
+
+Findings. Acute myocardial infarction (AMI) usually presents with central crushing chest pain radiating to the jaw or left arm, sweating, nausea, and dyspnea, but presentations in women, elderly, and diabetic patients are frequently atypical: epigastric discomfort, isolated dyspnea, syncope, or fatigue. Ischemic-type chest discomfort plus elevated cardiac troponin confirms myocardial injury; ECG ST-segment changes classify STEMI versus NSTEMI.
+
+Differential diagnosis (ranked): (1) AMI; (2) stable angina, relieved by rest; (3) pulmonary embolism, with pleuritic pain and hypoxia; (4) aortic dissection, with tearing pain and pulse deficits; (5) pericarditis, positional pain with diffuse ST elevation; (6) musculoskeletal chest pain and GERD.
+
+Recommended investigations. Immediate 12-lead ECG (within 10 minutes) with serial tracings; high-sensitivity troponin at 0 and 1-3 hours; portable chest radiograph; pulse oximetry; echocardiography for wall-motion abnormalities and complications; after stabilization, risk stratification (GRACE score), coronary angiography, lipid profile, and HbA1c.
+
+Safety note: this reference supports observation report drafting only; emergency care decisions follow local STEMI protocols with physician review.

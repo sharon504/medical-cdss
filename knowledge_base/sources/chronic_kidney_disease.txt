@@ -1,0 +1,9 @@
+Chronic kidney disease: clinical reference summary
+
+Findings. Chronic kidney disease (CKD) is defined as abnormalities of kidney structure or function persisting for more than three months. It is usually asymptomatic until advanced stages, when anemia resistant to iron, hypertension, nocturia, pruritus, and edema appear. Diabetes and hypertension are the leading causes; eGFR stage 1-5 classification with A1-A3 albuminuria stage quantifies risk of progression.
+
+Differential diagnosis (ranked for acute-on-chronic presentations): (1) CKD progression; (2) prerenal acute kidney injury from dehydration, NSAIDs, sepsis; (3) acute interstitial nephritis, medication allergic features; (4) obstructive uropathy with hydronephrosis; (5) rapidly progressive glomerulonephritis with active urinary sediment.
+
+Recommended investigations. Serum creatinine with eGFR trend, urine albumin-creatinine ratio, urinalysis for protein and sediment; renal ultrasound for size and obstruction; CBC, calcium, phosphate, vitamin D, PTH in advanced stage; HbA1c and lipid profile if diabetic. Avoid nephrotoxins; review all medications including metformin dose relevance for eGFR.
+
+Traceability note: staging formulas and referral thresholds should cite retrieved guideline passages such as KDIGO summaries rather than model memory.

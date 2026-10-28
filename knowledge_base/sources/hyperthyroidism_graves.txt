@@ -1,0 +1,9 @@
+Hyperthyroidism (Graves disease): clinical reference summary
+
+Findings. Hyperthyroidism presents with weight loss despite normal appetite, heat intolerance, palpitations, tremor, anxiety, insomnia, sweating, and fatigue. Graves disease adds diffuse smooth goiter, ophthalmopathy (proptosis, diplopia), and pretibial myxedema; brisk reflexes and wide pulse pressure are common examination findings. Thyrotoxic crisis is a life-threatening decompensation with fever and delirium.
+
+Differential diagnosis (ranked): (1) Graves disease, suppressed TSH with elevated free T4/T3 and TSH-receptor antibodies; (2) toxic multinodular goiter, hot nodules on scan; (3) toxic adenoma; (4) thyroiditis, transient thyrotoxicosis with low radioiodine uptake; (5) exogenous hormone or iodine intake; (6) factitious thyroid hormone use.
+
+Recommended investigations. First-line TSH, free T4, free T3; TSH-receptor antibodies (TRAb) to confirm Graves; thyroid ultrasound and radioiodine uptake scan when etiology is unclear; ECG for atrial fibrillation; CBC and LFTs at baseline before antithyroid therapy consultation.
+
+Traceability note: any statement on antithyroid drug choice, dosing, or radioiodine must attach a retrieved guideline citation; otherwise the claim is flagged and suppressed.

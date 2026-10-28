@@ -1,0 +1,9 @@
+Community-acquired pneumonia: clinical reference summary
+
+Findings. Community-acquired pneumonia (CAP) presents with acute-onset fever, productive cough, dyspnea, pleuritic chest pain, and focal crackles or bronchial breathing on auscultation. In older adults, confusion and fatigue may dominate without classic fever. CURB-65 (confusion, urea >7 mmol/L, respiratory rate >=30, blood pressure <90/60, age >=65) stratifies severity and guides site of care.
+
+Differential diagnosis (ranked): (1) CAP (bacterial, often Streptococcus pneumoniae); (2) atypical pneumonia (Mycoplasma, Chlamydia, Legionella) with prodrome, dry cough, and GI symptoms; (3) pulmonary tuberculosis, especially with night sweats, weight loss, and prolonged symptoms; (4) acute bronchitis, typically without focal lung findings; (5) pulmonary embolism when breathlessness is disproportionate; (6) heart failure mimicking pneumonia in the elderly.
+
+Recommended investigations. Chest radiograph for consolidation; CBC, CRP, blood urea; pulse oximetry; sputum Gram stain and culture, blood cultures if septic; urinary Legionella and pneumococcal antigens in severe cases; COVID-19 and influenza PCR in season; D-dimer/CTPA if PE suspected. Biomarkers such as procalcitonin can help de-escalate antibiotics.
+
+Traceability note: claims about antimicrobial therapy should cite current guideline passages retrieved from the knowledge base rather than restating memorized protocols.

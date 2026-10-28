@@ -1,0 +1,9 @@
+Iron deficiency anemia: clinical reference summary
+
+Findings. Iron deficiency anemia typically presents with fatigue, exertional dyspnea, pallor, headache, and sometimes pica or glossitis. Common causes in adults include chronic blood loss (menorrhagia, gastrointestinal bleeding) and inadequate dietary intake; in vegetarian or vegan diets, non-heme iron bioavailability is low. Microcytic anemia (low MCV, high RDW) with low serum ferritin (<30 ug/L) and low transferrin saturation is diagnostic. Serum ferritin is the single most useful test but rises with inflammation, so concomitant CRP helps interpretation.
+
+Differential diagnosis (ranked by typical relevance for microcytic anemia): (1) iron deficiency anemia; (2) anemia of chronic disease/inflammation; (3) thalassemia trait, suggested by very low MCV with normal or high RDW and a Mentzer index (MCV/RBC) < 13; (4) sideroblastic anemia (rare, elderly).
+
+Recommended investigations. Complete blood count with reticulocytes; serum iron studies (ferritin, transferrin saturation, TIBC); CRP; celiac serology if refractory; in men and in postmenopausal women, endoscopy and colonoscopy to exclude occult GI malignancy. Response to oral iron (hemoglobin rise of 10-20 g/L in 4 weeks) confirms the diagnosis.
+
+Traceability note: every claim should be anchored to a retrieved passage from PubMed abstracts or NCBI Bookshelf chapter sources in the knowledge base.

@@ -1,0 +1,9 @@
+Type 2 diabetes mellitus: clinical reference summary
+
+Findings. Type 2 diabetes mellitus (T2DM) often presents with polyuria, polydipsia, weight loss, recurrent infections, blurred vision, or may be asymptomatic and found on screening. Risk factors include obesity, sedentary lifestyle, family history, and South Asian, African, or Hispanic ethnicity. Diagnostic criteria via fasting plasma glucose >= 126 mg/dL, 2-hour OGTT >= 200 mg/dL, HbA1c >= 6.5%, or random glucose >= 200 mg/dL with classic symptoms, each confirmed by repeat testing unless unequivocal hyperglycemia.
+
+Differential diagnosis (ranked): (1) T2DM; (2) type 1/LADA suggested by low BMI, ketosis, younger age, low C-peptide with autoimmune antibodies; (3) secondary diabetes from steroids, pancreatitis, hemochromatosis; (4) stress hyperglycemia during acute illness; (5) gestational diabetes in pregnancy.
+
+Recommended investigations. First-line HbA1c, fasting glucose profile; baseline urine albumin-creatinine ratio, serum creatinine/eGFR, lipid panel, LFTs; diabetic retinal screening; foot inspection with monofilament testing; ECG. Monitor treatment with periodic HbA1c.
+
+Safety note: insulin and medication selection must be left to the treating clinician; the system's role is grounded observation summaries, not prescriptions.
