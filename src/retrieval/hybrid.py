@@ -53,7 +53,14 @@ def hybrid_search(
     top_k = top_k or cfg["final_top_k"]
 
     bm25_hits = bm25_search(query, top_k=cfg["top_k_bm25"])
-    dense_hits = DenseIndex().search(query, top_k=cfg["top_k_dense"])
+    try:
+        from .dense_index import DenseIndex
+
+        dense_hits = DenseIndex().search(query, top_k=cfg["top_k_dense"])
+    except Exception as exc:  # noqa: BLE001 (heavy deps missing - degradation)
+        print(f"[hybrid] dense leg unavailable ({exc.__class__.__name__}) - "
+              "fusing BM25 lists only")
+        dense_hits = []
     fused = reciprocal_rank_fusion(dense_hits, bm25_hits, rrf_k=cfg["rrf_k"])
     return fused[:top_k]
 
