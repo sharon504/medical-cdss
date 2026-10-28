@@ -86,6 +86,55 @@ def build_prompt(patient: dict, evidence: list[Evidence], cfg: GenerationConfig)
     )
 
 
+def build_triplet_prompt(
+    patient: dict,
+    evidence: list[Evidence],
+    cfg: GenerationConfig,
+    extractor=None,
+) -> tuple[str, list, list[Evidence]]:
+    """Respondent prompt conditioned on distilled reasoning triplets
+    (paper-faithful) instead of raw evidence snippets.
+
+    Triplets keep their [E#] provenance; the raw passages are still shared
+    with the clinician through the report's EVIDENCE REFERENCES footer made
+    by src/generation/postprocess.py.
+    """
+    from .triplets import concatenated_block, rule_based_extract
+
+    extractor = extractor or rule_based_extract
+    triplets: list = []
+    for i, ev in enumerate(evidence, start=1):
+        triplets.extend(extractor(ev, f"E{i}"))
+
+    evidence_block = (
+        concatenated_block(triplets)
+        if triplets
+        else "[no usable evidence triplets extracted]"
+    )
+
+    instruction = (
+        "You are a clinical decision support assistant. Using ONLY the "
+        "structured reasoning triplets below, draft a structured observation "
+        "report. Cite the triplet's evidence id, e.g. [E1], next to each "
+        "claim you take from it. If a triplet is flagged CONFLICT or a "
+        "conclusion is uncertain, say so in the CONFLICTS / UNCERTAINTY "
+        "section instead of asserting either side.\n\n"
+    )
+    label = "RETRIEVED EVIDENCE TRIPLETS:"
+    prompt = (
+        f"{instruction}"
+        f"PATIENT SUMMARY:\n{patient_summary(patient, cfg.max_patient_chars)}\n\n"
+        f"{label}\n{evidence_block}\n\n"
+        f"REPORT:\n"
+        f"FINDINGS:\n"
+        f"DIFFERENTIAL DIAGNOSES (ranked):\n"
+        f"RECOMMENDED INVESTIGATIONS:\n"
+        f"CONFLICTS / UNCERTAINTY:\n"
+        f"EVIDENCE REFERENCES:\n"
+    )
+    return prompt, triplets, evidence
+
+
 def generate_kwargs(cfg: GenerationConfig) -> dict:
     return {
         "max_new_tokens": cfg.max_new_tokens,

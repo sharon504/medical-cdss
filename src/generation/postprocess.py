@@ -65,16 +65,27 @@ def extract_citations(claim: str) -> tuple[str, set[str]]:
 
 
 def unsupported_ratio(text: str, evidence: list[Evidence]) -> float:
-    """Fraction of generated sentences with no supporting passage."""
-    sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", text) if s.strip()]
-    content = [
-        s for s in sentences
-        if not _HEADER_RE.match(s) and len(s.split()) >= 6
-    ] or [s for s in sentences if s.strip()]
-    if not content:
+    """Fraction of generated content sentences with no supporting passage.
+
+    Counted line-by-line so that an unsupported sentence following a
+    structural header line (e.g. 'EVIDENCE REFERENCES:') is not merged
+    into the header and silently skipped.
+    """
+    supported_flags: list[bool] = []
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if _HEADER_RE.match(stripped) and stripped.endswith(":"):
+            continue  # structural header line
+        for sentence in re.split(r"(?<=[.!?])\s+", stripped):
+            content = sentence.strip()
+            if not content or len(content.split()) < 6:
+                continue
+            supported_flags.append(is_supported(content, evidence))
+    if not supported_flags:
         return 0.0
-    unsupported = [s for s in content if not is_supported(s, evidence)]
-    return len(unsupported) / len(content)
+    return 1 - sum(supported_flags) / len(supported_flags)
 
 
 def strip_unsupported(
