@@ -57,10 +57,13 @@ if sample_files:
         st.json(patient)
 
     if st.button("Generate observation report", type="primary"):
-        from src.retrieval.hybrid import build_patient_query, hybrid_search
+        from src.generation.conflict import system_conflicts_report
+        from src.generation.pipeline import ReportGenerator
+        from src.retrieval.hybrid import build_patient_query
 
-        with st.spinner("Retrieving evidence ..."):
-            evidence = hybrid_search(build_patient_query(patient))
+        with st.spinner("Retrieving evidence (coarse-fine) ..."):
+            gen = get_generator() or ReportGenerator(mode="triplets")
+            evidence = gen.retrieve(patient)
         st.subheader(f"Retrieved evidence ({len(evidence)})")
         for i, ev in enumerate(evidence, start=1):
             st.markdown(
@@ -69,19 +72,30 @@ if sample_files:
                 f"> {ev.text[:400]}..."
             )
 
-        if not model_missing:
+        with st.spinner("Distilling reasoning triplets ..."):
+            prompt, triplets, _ = gen.retrieve_endpoints(patient)
+        st.subheader(f"Reasoning triplets ({len(triplets)})")
+        for idx, t in enumerate(triplets, start=1):
+            st.markdown(
+                f"**T{idx}** ({t.condition} **; {t.relation};** {t.conclusion})"
+                f" `[{t.evidence_id}]`"
+            )
+
+        conflicts, confidence = system_conflicts_report(triplets)
+        st.metric("Conflict confidence", f"{confidence:.2f}")
+        if conflicts:
+            st.warning(conflicts)
+
+        if get_generator() is not None:
             with st.spinner("Generating grounded report ..."):
-                report, ratio, _ = get_generator().run(patient)
-            st.subheader(f"Observation report — unsupported claim ratio {ratio:.1%}")
+                report, ratio, _, trace = gen.run(patient)
+            st.subheader(
+                f"Observation report — unsupported claim ratio {ratio:.1%}, "
+                f"confidence {trace['confidence']:.2f} ({trace['mode']} mode)"
+            )
             st.markdown(report)
         else:
-            from src.generation.prompting import (
-                GenerationConfig, build_prompt, patient_summary)
-
-            cfg = GenerationConfig.from_settings()
-            st.subheader("Prompt that would be sent to the model")
-            st.code(build_prompt(patient, evidence, cfg), language="text")
-            st.subheader("Patient summary extracted")
-            st.code(patient_summary(patient, cfg.max_patient_chars), language="text")
+            st.subheader("Respondent prompt (model checkpoint pending Colab training)")
+            st.code(prompt, language="text")
 else:
     st.warning("No sample patient JSON files found.")

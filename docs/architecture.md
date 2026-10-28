@@ -1,60 +1,84 @@
-# Architecture Notes — Medical CDSS
+# Architecture Notes — GT-MedRAG (Grounding-driven Triplet MedRAG)
 
-## Design principle
+## Relationship to the base paper
 
-**Knowledge lives outside the model.** The GPT-2 generator learns clinical
-language and report structure only; medical facts are retrieved at runtime
-from an external, independently updatable knowledge base. Updating medical
-knowledge never requires retraining the model.
+This project adapts **ER-MedRAG** (Shi et al., 2026, *JKSU-CIS* 38:428 — a
+multi-agent RL framework for clinical RAG) from closed clinical **QA**
+(7B/70B LLMs, binary answer-match reward) to open-ended, evidence-grounded
+**observation report generation** at GPT-2 scale. Positions adopted from
+the paper: coarse-to-fine hybrid retrieval; extractor-respondent
+separation; triplet `(condition; relation; conclusion)` evidence
+distillation; two-stage RL (DPO extractor + GRPO respondent).
 
-## Pipeline
+## What we changed and added (beyond the paper)
 
-1. **Knowledge base** (`src/corpus/`)
-   - Sources: PubMed abstracts (E-utilities), curated seed references,
-     optionally guideline text.
-   - Everything is chunked to ≤300 words with 50-word overlap
-     (`src/corpus/chunking.py`) and stored as JSONL with provenance
-     (PMID / source file).
+| # | Addition | Why (paper limitation addressed) |
+| --- | --- | --- |
+| 1 | **Grounding-as-Reward (GaR)** for the respondent: R_support 0.4 + R_citation 0.25 + R_structure 0.15 + R_conflict 0.2, computed by the repo's deterministic verifier | Paper's `Rresult` is a binary QA match — coarse, no faithfulness measurement, impossible for open-ended reports |
+| 2 | **Triplet-level provenance**: every triplet carries its `[E#]`, so citations are claim-level | Paper's traceability stops at snippet level |
+| 3 | **Adversarial noise curriculum + Grounding Robustness Score (GRS)**: corrupted-evidence prompts (drop/swap/contradict at 20/40%) in GRPO training + degradation-curve metric | Paper reports brittleness under noisy/contradictory retrieval but evaluates only clean retrieval |
+| 4 | **Conflict detection & clinician escalation**: contradiction triplets, `CONFLICTS / UNCERTAINTY` section, abstention when confidence < 0.6 | Paper has no contradiction handling |
+| 5 | **Resource-frugal validation**: full pipeline at GPT-2 scale on free Colab T4 | Paper uses 7B/8B/70B open models |
 
-2. **Hybrid retrieval** (`src/retrieval/`)
-   - Sparse: BM25 (Okapi, k1=1.5, b=0.75) — exact keyword/term matching.
-   - Dense: S-PubMedBERT sentence embeddings, normalized, FAISS inner product —
-     conceptual/semantic matching.
-   - Fusion: Reciprocal Rank Fusion (`1/(60+rank)`), top-6 passages returned
-     with `[E1]..[E6]` citation ids and per-chunk provenance.
+## Pipeline (v2)
 
-3. **Generation** (`src/generation/`, `notebooks/`)
-   - Phase 1 (Colab): GPT-2-medium continued pretraining on clinical text
-     corpus ("domain adaptation").
-   - Phase 2 (Colab): supervised fine-tuning on
-     `evidence + patient summary -> structured report` pairs
-     (label mask supervises only the report tokens, not the prompt).
-   - Prompt template (matching training format) instructs the model to cite
-     `[E#]` ids next to claims.
+```
+Patient inputs
+    |
+    v
+Coarse-to-fine hybrid retrieval (ER-MedRAG Alg. 2)   src/retrieval/coarse_fine.py
+  BM25 top-15 coarse -> dense re-rank top-5          src/retrieval/hybrid.py (RRF kept for ablation)
+    |
+    v
+Evidence [E1..E5] ----+---> conflict detector        src/generation/conflict.py
+    |                 |
+    v                 |
+Extractor agent       | (noise-corrupted copies feed only eval / GRPO curriculum)
+(DPO, notebook 03)    |
+  triplets (condition; relation; conclusion) with [E#] provenance
+    |
+    v
+Respondent agent (Grounded-GRPO, notebook 04) generates the grounded report
+    |
+    v
+Post-processor (deterministic verifier) src/generation/postprocess.py
+  sentence-level support check -> suppress ungrounded claims
+  citation accuracy, structure validation, reference footer
+    |
+    v
+Report: FINDINGS / DIFFERENTIAL (ranked) / INVESTIGATIONS /
+        CONFLICTS-UNCERTAINTY / EVIDENCE REFERENCES
+        (+ SYSTEM NOTE escalation when conflicts force abstention)
+```
 
-4. **Grounding / post-processing** (`src/generation/postprocess.py`)
-   - Every generated sentence is checked against retrieved passages with a
-     deterministic lexical support heuristic (word-window containment).
-   - Unsupported sentences are demoted to "(suppressed: …)" notes.
-   - `EVIDENCE REFERENCES` footer maps `[E#]` → source titles/PMIDs.
-   - Report sections: FINDINGS / DIFFERENTIAL DIAGNOSES (ranked) /
-     RECOMMENDED INVESTIGATIONS / EVIDENCE REFERENCES.
+## Grounding verification (src/generation/postprocess.py)
 
-5. **Evaluation** (`src/evaluation/`)
-   - Retrieval: recall@1/3/5/6, MRR on `data/processed/eval/retrieval_dev.jsonl`.
-   - Grounding: citation accuracy, unsupported-claim ratio, structure score.
-   - Ablations: `baseline_gpt2` vs `domain_adapted` (no retrieval) vs
-     `full_rag` — see `docs/ablation_results.md` (generated artifact).
+- Lexical containment heuristic (word-window with >=4 content-word overlap) -
+  deterministic claim-evidence support check (upgrade path: NLI model).
+- Unsupported sentences are demoted to `(suppressed: ...)` notes, never
+  silently dropped.
+- `EVIDENCE REFERENCES` footer maps `[E#]` -> source titles / PMIDs.
 
-## Safety boundaries
+## Evaluation artifacts
 
-- No autonomous diagnosis, no prescriptions; reports are decision support.
-- Unsupported claims are suppressed, not silently kept.
-- All retrieved evidence stays visible to the clinician.
+- `src/evaluation/retrieval_metrics.py` - recall@k, MRR (retrieval_dev.jsonl)
+- `src/evaluation/grounding.py` - citation accuracy, unsupported ratio, structure
+- `src/evaluation/ablation.py` - GT variant matrix:
+  `full_rag_triplets` (proposed) / `rag_triplets_no_conflict` /
+  `rag_raw_snippets` / `rag_rrf_not_c2f` / `baseline_gpt2` / `domain_adapted`
+- `src/evaluation/robustness.py` - corruption harness (drop/swap/contradict),
+  GRS, token-level output entropy stability study (paper Sec. 4.11 analogue)
 
-## Upgrade paths (documented for viva)
+## Evaluation results (so far)
 
-- Lexical support heuristic → NLI-based claim–evidence entailment checker.
-- BM25+RRF → cross-encoder reranking of top candidates.
-- GPT-2 → BioGPT / GPT-2-medium+LoRA as compute allows.
-- Cox leakage: knowledge base can grow without touching trained weights.
+- Retrieval (BM25-only degraded path): recall@1 = 0.90, recall@3 = 1.00, MRR = 0.95
+- Corruption/GRS machinery verified on synthetic evidence (all 3 operators)
+- Full matrix pending RL training (notebooks 03/04, Colab), then
+  `python -m src.evaluation.ablation --aggregate` -> docs/ablation_results.md
+
+## Safety boundaries (tightened vs v1)
+
+- No autonomous diagnosis, no prescriptions; decision-support only.
+- Conflict-heavy evidence triggers clinician escalation instead of a silent blend.
+- All retrieved evidence remains visible in the report footer.
+
