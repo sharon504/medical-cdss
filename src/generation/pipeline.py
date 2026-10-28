@@ -67,6 +67,16 @@ class ReportGenerator:
         tokens = model.generate(**encoding, **generate_kwargs(self.cfg))
         return tokenizer.decode(tokens[0], skip_special_tokens=True)
 
+    def retrieve_endpoints(self, patient: dict):
+        """Evidence + prompt without invoking the model (for studies/eval)."""
+        evidence = self.retrieve(patient)
+        if self.mode == "triplets":
+            prompt, triplets, evidence = build_triplet_prompt(
+                patient, evidence, self.cfg, extractor=self.extractor
+            )
+            return prompt, triplets, evidence
+        return raw_evidence_prompt(patient, evidence, self.cfg), [], evidence
+
     def retrieve(self, patient: dict):
         from ..retrieval.coarse_fine import coarse_fine_search
 
