@@ -38,6 +38,10 @@ retrieval:
   dense_model: pritamdeka/S-PubMedBert-MS-MARCO
   bm25_k1: 1.5
   bm25_b: 0.75
+  # ER-MedRAG Algorithm 2 (system default): coarse BM25 fan-out, dense re-rank
+  coarse_top_n: 15
+  fine_top_m: 5
+  # legacy parallel fusion (kept for ablation)
   top_k_dense: 20
   top_k_bm25: 20
   final_top_k: 6
