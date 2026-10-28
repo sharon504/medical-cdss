@@ -179,13 +179,20 @@ def main() -> None:
         chunks = [json.loads(l) for l in
                   open(ROOT / "knowledge_base" / "chunks.jsonl")]
 
-    from src.generation.prompting import GenerationConfig, build_prompt
+    from src.generation.prompting import (
+        GenerationConfig, build_prompt, build_triplet_prompt, patient_summary)
 
     cfg = GenerationConfig.from_settings()
     sft_out = processed / "sft_pairs.jsonl"
+    triplet_out = processed / "triplet_pairs.jsonl"
+    noise_out = processed / "noise_variants.jsonl"
     n_pairs = n_skip = 0
 
-    with open(sft_out, "w") as sft:
+    from src.evaluation.robustness import corrupt_evidence
+    from src.retrieval.base import Evidence
+
+    with open(sft_out, "w") as sft, open(triplet_out, "w") as tpt, \
+            open(noise_out, "w") as nz:
         for seed_path in sources:
             stem = seed_path.stem
             seed_text = seed_path.read_text()
@@ -204,7 +211,6 @@ def main() -> None:
             evidence = search_corpora(
                 json.dumps(patient, ensure_ascii=False), chunks, top_k=6
             )
-
             sft.write(json.dumps({
                 "condition": stem,
                 "patient": patient,
@@ -213,6 +219,47 @@ def main() -> None:
                 "evidence_ids": [ev.chunk_id for ev in evidence],
             }) + "\n")
             n_pairs += 1
+
+            # ---- reasoning-triplet pairs (DPO extractor training data) ----
+            from src.generation.triplets import gold_triplets
+
+            inconsistent = 0
+            for i, ev in enumerate(evidence[:4], start=1):
+                golds = gold_triplets(ev, f"E{i}", max_triplets=2)
+                if not golds:
+                    continue
+                canonical = " ".join(
+                    f"({t.condition}; {t.relation}; {t.conclusion})"
+                    for t in golds
+                )
+                # dispreferred: truncated + relation-dropped degenerate triplet
+                first = golds[0]
+                poor = (f"({first.condition[:len(first.condition)//2]}; "
+                        "related to; medical judgment)")
+                tpt.write(json.dumps({
+                    "condition": stem,
+                    "evidence_id": f"E{i}",
+                    "source_chunk": ev.chunk_id,
+                    "snippet": ev.text,
+                    "chosen": canonical,
+                    "rejected": poor,
+                }) + "\n")
+
+            # ---- noise-robustness variants (GRPO adversarial curriculum) ----
+            for op in ("drop", "swap", "contradict"):
+                for rate in (0.2, 0.4):
+                    corr = corrupt_evidence(evidence, rate, op=op)
+                    t_prompt, triplets, _ = build_triplet_prompt(
+                        patient, corr.corrupted, cfg)
+                    nz.write(json.dumps({
+                        "condition": stem,
+                        "corruption": op,
+                        "rate": rate,
+                        "patient": patient,
+                        "prompt": t_prompt,
+                        "target": target,
+                        "evidence_ids": [ev.chunk_id for ev in corr.corrupted],
+                    }) + "\n")
 
     # ---- held-out eval patients (different age band) ----
     for seed_path in sources:
@@ -239,7 +286,9 @@ def main() -> None:
                 "condition": stem,
             }) + "\n")
 
-    print(f"sft pairs: {n_pairs} (skipped seeds: {n_skip}) -> {sft}")
+    print(f"sft pairs: {n_pairs} (skipped seeds: {n_skip}) -> {sft_out}")
+    print(f"triplet pairs -> {triplet_out}")
+    print(f"noise-variant pairs -> {noise_out}")
     print(f"eval patients -> {eval_patients}")
     print("retrieval dev -> data/processed/eval/retrieval_dev.jsonl")
 
